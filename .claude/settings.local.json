@@ -6,7 +6,9 @@
       "Bash(python3 -c \"import mlx_lm; help\\(mlx_lm.load\\)\")",
       "Bash(pip list *)",
       "Bash(python3 *)",
-      "Bash(uv run *)"
+      "Bash(uv run *)",
+      "Bash(uv pip *)",
+      "Bash(uv add *)"
     ]
   }
 }

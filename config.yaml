@@ -1,12 +1,15 @@
 mlx:
   models:
-    qwen4b:
+    qwen3:
       model_name: "Qwen/Qwen3-4B-Instruct-2507"
     llama8b:
       model_name: "mlx-community/Meta-Llama-3.1-8B-Instruct-8bit"
 llama:
   models:
-    qwen4b:
+    qwen25:
+      model_name: "bartowski/Qwen2.5-14B-Instruct-GGUF"
+      model_type: "*Q4_K_M.gguf"
+    qwen3:
       model_name: "bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF"
       model_type: "*Q8_0.gguf"
     llama8b:
@@ -14,7 +17,12 @@ llama:
       model_type: "*Q8_0.gguf"
 torch:
   models:
-    qwen4b:
+    qwen25:
+      model_name: "/Users/cyunker/models/qwen2/Qwen2.5-14B-Instruct-Q4_K_M.gguf"
+      model_base: "Qwen/Qwen2.5-14B-Instruct"
+      #model_name: "bartowski/Qwen2.5-14B-Instruct-GGUF"
+      #model_type: "*Q4_K_M.gguf"
+    qwen3:
       model_name: "Qwen/Qwen3-4B-Instruct-2507"
     llama8b:
       model_name: "meta-llama/Llama-3.1-8B-Instruct"

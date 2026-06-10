@@ -1,3 +1,4 @@
+import os
 import time
 import torch
 import torch.nn.functional as F
@@ -43,15 +44,41 @@ class TorchHarness(Harness):
 
         start = time.perf_counter()
 
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            cfg.model_name,
-            clean_up_tokenization_spaces=False,
-        )
-        self.model = AutoModelForCausalLM.from_pretrained(
-            cfg.model_name,
-            dtype="auto",
-            device_map=self.device,
-        )
+        if cfg.model_name.endswith(".gguf"):
+            model_base = getattr(cfg, "model_base", None)
+            if model_base:
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    model_base,
+                    clean_up_tokenization_spaces=False,
+                )
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    model_base,
+                    torch_dtype="auto",
+                    device_map=self.device,
+                )
+            else:
+                model_dir = os.path.dirname(cfg.model_name)
+                gguf_file = os.path.basename(cfg.model_name)
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    model_dir,
+                    gguf_file=gguf_file,
+                    clean_up_tokenization_spaces=False,
+                )
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    model_dir,
+                    gguf_file=gguf_file,
+                    device_map=self.device,
+                )
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                cfg.model_name,
+                clean_up_tokenization_spaces=False,
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                cfg.model_name,
+                dtype="auto",
+                device_map=self.device,
+            )
 
         end = time.perf_counter()
         cfg.load_time = end - start
